@@ -1,75 +1,96 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>geopm</title>
+#  Copyright (c) 2015, 2016, 2017, 2018, Intel Corporation
+#
+#  Redistribution and use in source and binary forms, with or without
+#  modification, are permitted provided that the following conditions
+#  are met:
+#
+#      * Redistributions of source code must retain the above copyright
+#        notice, this list of conditions and the following disclaimer.
+#
+#      * Redistributions in binary form must reproduce the above copyright
+#        notice, this list of conditions and the following disclaimer in
+#        the documentation and/or other materials provided with the
+#        distribution.
+#
+#      * Neither the name of Intel Corporation nor the names of its
+#        contributors may be used to endorse or promote products derived
+#        from this software without specific prior written permission.
+#
+#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+#  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+#  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+#  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+#  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY LOG OF THE USE
+#  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <link rel="icon" type="image/png" href="geopm-logo.png">
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <div class="wrapper">
-      <header><div role="navigation">
-        <h1><img src="geopm-logo.png" border="0" align="middle" height="72" width="72" alt="G"/>EOPM</h1>
-        <h2>Global Extensible Open Power Manager</h2>
-        <hr>
-        <h3>Project Overview:</h3>
-        <h4><a href="man/geopm.7.html">User Manual</a></h4>
-        <h4><a href="https://rd.springer.com/chapter/10.1007/978-3-319-58667-0_21">ISC'17 Proceedings</a></h4>
-        <h4><a href="https://github.com/geopm/geopm/tree/dev/tutorial">Tutorial source</a> /
-        <a href="https://www.youtube.com/playlist?list=PLwm-z8c2AbIBU-T7HnMi_Pux7iO3gQQnz">video</a></h4>
-        <h3>Open Development:</h3>
-        <h4><a href="https://github.com/geopm/geopm">Source code repository</a></h4>
-        <h4><a href="https://github.com/geopm/geopm/blob/dev/CONTRIBUTING.md">Contribution instructions</a></h4>
-        <h4><a href="https://github.com/geopm/geopm/issues">Work item backlog</a></h4>
-        <h4><a href="https://geopm.slack.com">Slack message board</a></h4>
-        <h4><a href="https://review.gerrithub.io/#/q/project:geopm/geopm">Code review</a></h4>
-        <h4><a href="https://travis-ci.org/geopm/geopm">Travis-CI build and test</a></h4>
-        <h4><a href="coverage/index.html">Code coverage results</a></h4>
-        <h4><a href="dox/index.html">Doxygen pages</a></h4>
-        <h3>Downloads:</h3>
-        <h4><a href="https://github.com/geopm/geopm/releases">Source release archives</a></h4>
-        <h4><a href="https://build.opensuse.org/package/show/home:cmcantalupo:geopm-dev/geopm-dev">OBS build, test and packaging of dev branch</a></h4>
-        <h4><a href="http://download.opensuse.org/repositories/home:/cmcantalupo:/geopm">OBS release packages</a></h4>
-        <h4><a href="http://build.openhpc.community/OpenHPC:/1.3:/Update6:/Factory/">OpenHPC packages</a></h4>
-      </div></header>
-      <section role="main">
-        <h2>Welcome to GEOPM</h2>
-        <P align="justify">
-        Global Extensible Open Power Manager (GEOPM) is an extensible power
-        management framework targeting high performance computing.  The library can be
-        extended to support new control algorithms and new hardware power management
-        features.  The GEOPM package provides built in features ranging from static
-        management of power policy for each individual compute node, to dynamic
-        coordination of power policy and performance across all of the compute nodes
-        hosting one MPI job on a portion of a distributed computing system.  The
-        dynamic coordination is implemented as a hierarchical control system for
-        scalable communication and decentralized control.  The hierarchical control
-        system can optimize for various objective functions including maximizing
-        global application performance within a power bound.  The root of the control
-        hierarchy tree can communicate through shared memory with the system resource
-        management daemon to extend the hierarchy above the individual MPI job level
-        and enable management of system power resources for multiple MPI jobs and
-        multiple users by the system resource manager.  The GEOPM package provides the
-        libgeopm library, the libgeopmpolicy library, and the geopmctl, geopmpolicy,
-        geopmanalysis, and geopmbench applications.  The libgeopm library can be called
-        within MPI applications to enable application feedback for informing the control
-        decisions.  If modification of the target application is not desired then the
-        geopmctl application can be run concurrently with the target application.  In
-        this case, target application feedback is inferred by querying the hardware
-        through Model Specific Registers (MSRs).  With either method (libgeopm or
-        geopmctl), the control hierarchy tree writes processor power policy through
-        MSRs to enact policy decisions.  The libgeopmpolicy library is used by a
-        resource manager to set energy policy control parameters for MPI jobs.  Some
-        features of libgeopmpolicy are available through the geopmpolicy application
-        including support for static control.
-        </P>
-        <a href="heirarchy.jpg"><img src="heirarchy.jpg" border="0" alt="GEOPM Heirarchy"/></a><br>
-        <p>For access to the latest code, clone the git repo (primarily for developers).</p>
-        <pre><code>$ git clone https://github.com/geopm/geopm.git</code></pre>
-  </body>
-</html>
+#geopm pages
+geopm(7)                         geopm.7
+geopm_agent_energy_efficient(7)  geopm_agent_energy_efficient.7
+geopm_agent_monitor(7)           geopm_agent_monitor.7
+geopm_agent_power_balancer(7)    geopm_agent_power_balancer.7
+geopm_agent_power_governor(7)    geopm_agent_power_governor.7
+geopmpy(7)                       geopmpy.7
+geopm_agent_c(3)                 geopm_agent_c.3
+geopm_ctl_c(3)                   geopm_ctl_c.3
+geopm_endpoint_c(3)              geopm_endpoint_c.3
+geopm_error(3)                   geopm_error.3
+geopm_fortran(3)                 geopm_fortran.3
+geopm_imbalancer(3)              geopm_imbalancer.3
+geopm_prof_c(3)                  geopm_prof_c.3
+geopm_sched(3)                   geopm_sched.3
+geopm_time(3)                    geopm_time.3
+geopm_version(3)                 geopm_version.3
+geopmagent(1)                    geopmagent.1
+geopmanalysis(1)                 geopmanalysis.1
+geopmbench(1)                    geopmbench.1
+geopmctl(1)                      geopmctl.1
+geopmendpoint(1)                 geopmendpoint.1
+geopmlaunch(1)                   geopmlaunch.1
+geopmread(1)                     geopmread.1
+geopmwrite(1)                    geopmwrite.1
+geopm::Agent(3)                  GEOPM_CXX_MAN_Agent.3
+geopm::Agg(3)                    GEOPM_CXX_MAN_Agg.3
+geopm::CircularBuffer(3)         GEOPM_CXX_MAN_CircularBuffer.3
+geopm::Comm(3)                   GEOPM_CXX_MAN_Comm.3
+geopm::CpuinfoIOGroup(3)         GEOPM_CXX_MAN_CpuinfoIOGroup.3
+geopm::EnergyEfficientAgent(3)   GEOPM_CXX_MAN_EnergyEfficientAgent.3
+geopm::EnergyEfficientRegion(3)  GEOPM_CXX_MAN_EnergyEfficientRegion.3
+geopm::Exception(3)              GEOPM_CXX_MAN_Exception.3
+geopm::Helper(3)                 GEOPM_CXX_MAN_Helper.3
+geopm::IOGroup(3)                GEOPM_CXX_MAN_IOGroup.3
+geopm::MPIComm(3)                GEOPM_CXX_MAN_MPIComm.3
+geopm::MSR(3)                    GEOPM_CXX_MAN_MSR.3
+geopm::MSRIO(3)                  GEOPM_CXX_MAN_MSRIO.3
+geopm::MSRIOGroup(3)             GEOPM_CXX_MAN_MSRIOGroup.3
+geopm::MonitorAgent(3)           GEOPM_CXX_MAN_MonitorAgent.3
+geopm::PlatformIO(3)             GEOPM_CXX_MAN_PlatformIO.3
+geopm::PlatformTopo(3)           GEOPM_CXX_MAN_PlatformTopo.3
+geopm::PluginFactory(3)          GEOPM_CXX_MAN_PluginFactory.3
+geopm::PowerBalancer(3)          GEOPM_CXX_MAN_PowerBalancer.3
+geopm::PowerBalancerAgent(3)     GEOPM_CXX_MAN_PowerBalancerAgent.3
+geopm::PowerGovernor(3)          GEOPM_CXX_MAN_PowerGovernor.3
+geopm::PowerGovernorAgent(3)     GEOPM_CXX_MAN_PowerGovernorAgent.3
+geopm::ProfileIOGroup(3)         GEOPM_CXX_MAN_ProfileIOGroup.3
+geopm::ProfileIOSample(3)        GEOPM_CXX_MAN_ProfileIOSample.3
+geopm::RegionAggregator(3)       GEOPM_CXX_MAN_RegionAggregator.3
+geopm::SharedMemory(3)           GEOPM_CXX_MAN_SharedMemory.3
+geopm::TimeIOGroup(3)            GEOPM_CXX_MAN_TimeIOGroup.3
+
+#external pages
+CPU_SET(3)                      https://linux.die.net/man/3/cpu_set
+pthread_attr_setaffinity_np(3)  https://linux.die.net/man/3/pthread_attr_setaffinity_np
+pthread_setaffinity_np(3)       https://linux.die.net/man/3/pthread_setaffinity_np
+sched_getaffinity(2)            https://linux.die.net/man/2/sched_getaffinity
+sched_getcpu(3)                 https://linux.die.net/man/3/sched_getcpu
+errno(3)                        https://linux.die.net/man/3/errno
+git-describe(1)                 https://linux.die.net/man/1/git-describe
+ld.so(8)                        https://linux.die.net/man/8/ld.so
+lscpu(1)                        https://linux.die.net/man/1/lscpu
+asctime_r(3)                    https://linux.die.net/man/3/asctime_r
+dlopen(3)                       https://linux.die.net/man/3/dlopen
