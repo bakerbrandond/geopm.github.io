@@ -1,0 +1,677 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - src/Profile.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">src</a> - Profile.cpp<span style="font-size: 80%;"> (source / <a href="Profile.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">236</td>
+            <td class="headerCovTableEntry">255</td>
+            <td class="headerCovTableEntryHi">92.5 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-12-20 16:12:17</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">25</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntryHi">92.6 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*</a>
+<span class="lineNum">       2 </span>            :  * Copyright (c) 2015, 2016, 2017, 2018, Intel Corporation
+<span class="lineNum">       3 </span>            :  *
+<span class="lineNum">       4 </span>            :  * Redistribution and use in source and binary forms, with or without
+<span class="lineNum">       5 </span>            :  * modification, are permitted provided that the following conditions
+<span class="lineNum">       6 </span>            :  * are met:
+<span class="lineNum">       7 </span>            :  *
+<span class="lineNum">       8 </span>            :  *     * Redistributions of source code must retain the above copyright
+<span class="lineNum">       9 </span>            :  *       notice, this list of conditions and the following disclaimer.
+<span class="lineNum">      10 </span>            :  *
+<span class="lineNum">      11 </span>            :  *     * Redistributions in binary form must reproduce the above copyright
+<span class="lineNum">      12 </span>            :  *       notice, this list of conditions and the following disclaimer in
+<span class="lineNum">      13 </span>            :  *       the documentation and/or other materials provided with the
+<span class="lineNum">      14 </span>            :  *       distribution.
+<span class="lineNum">      15 </span>            :  *
+<span class="lineNum">      16 </span>            :  *     * Neither the name of Intel Corporation nor the names of its
+<span class="lineNum">      17 </span>            :  *       contributors may be used to endorse or promote products derived
+<span class="lineNum">      18 </span>            :  *       from this software without specific prior written permission.
+<span class="lineNum">      19 </span>            :  *
+<span class="lineNum">      20 </span>            :  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<span class="lineNum">      21 </span>            :  * &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<span class="lineNum">      22 </span>            :  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<span class="lineNum">      23 </span>            :  * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<span class="lineNum">      24 </span>            :  * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<span class="lineNum">      25 </span>            :  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<span class="lineNum">      26 </span>            :  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<span class="lineNum">      27 </span>            :  * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<span class="lineNum">      28 </span>            :  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<span class="lineNum">      29 </span>            :  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY LOG OF THE USE
+<span class="lineNum">      30 </span>            :  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<span class="lineNum">      31 </span>            :  */
+<span class="lineNum">      32 </span>            : #ifndef _GNU_SOURCE
+<span class="lineNum">      33 </span>            : #define _GNU_SOURCE
+<span class="lineNum">      34 </span>            : #endif
+<span class="lineNum">      35 </span>            : #ifdef __APPLE__
+<span class="lineNum">      36 </span>            : #define _DARWIN_C_SOURCE
+<span class="lineNum">      37 </span>            : #include &lt;sys/types.h&gt;
+<span class="lineNum">      38 </span>            : #include &lt;sys/sysctl.h&gt;
+<span class="lineNum">      39 </span>            : #endif
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            : #include &lt;algorithm&gt;
+<span class="lineNum">      42 </span>            : #include &lt;iostream&gt;
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            : #include &lt;float.h&gt;
+<span class="lineNum">      45 </span>            : #include &lt;unistd.h&gt;
+<span class="lineNum">      46 </span>            : #include &lt;string.h&gt;
+<span class="lineNum">      47 </span>            : #include &lt;errno.h&gt;
+<span class="lineNum">      48 </span>            : #include &lt;limits.h&gt;
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            : #include &quot;geopm.h&quot;
+<span class="lineNum">      51 </span>            : #include &quot;geopm_internal.h&quot;
+<span class="lineNum">      52 </span>            : #include &quot;geopm_region_id.h&quot;
+<span class="lineNum">      53 </span>            : #include &quot;geopm_time.h&quot;
+<span class="lineNum">      54 </span>            : #include &quot;geopm_signal_handler.h&quot;
+<span class="lineNum">      55 </span>            : #include &quot;geopm_sched.h&quot;
+<span class="lineNum">      56 </span>            : #include &quot;geopm_env.h&quot;
+<span class="lineNum">      57 </span>            : #include &quot;PlatformTopo.hpp&quot;
+<span class="lineNum">      58 </span>            : #include &quot;Profile.hpp&quot;
+<span class="lineNum">      59 </span>            : #include &quot;ProfileTable.hpp&quot;
+<span class="lineNum">      60 </span>            : #include &quot;ProfileThread.hpp&quot;
+<span class="lineNum">      61 </span>            : #include &quot;SampleScheduler.hpp&quot;
+<span class="lineNum">      62 </span>            : #include &quot;ControlMessage.hpp&quot;
+<span class="lineNum">      63 </span>            : #include &quot;SharedMemory.hpp&quot;
+<span class="lineNum">      64 </span>            : #include &quot;Exception.hpp&quot;
+<span class="lineNum">      65 </span>            : #include &quot;Comm.hpp&quot;
+<a name="66"><span class="lineNum">      66 </span>            : #include &quot;config.h&quot;</a>
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span><span class="lineCov">         77 : int geopm_region_id_is_mpi(uint64_t region_id)</span>
+<span class="lineNum">      69 </span>            : {
+<span class="lineNum">      70 </span><span class="lineCov">         77 :     return (region_id &amp; GEOPM_REGION_ID_MPI) ? 1 : 0;</span>
+<a name="71"><span class="lineNum">      71 </span>            : }</a>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineCov">          4 : int geopm_region_id_is_unmarked(uint64_t region_id)</span>
+<span class="lineNum">      74 </span>            : {
+<span class="lineNum">      75 </span><span class="lineCov">          4 :     return (region_id &amp; GEOPM_REGION_ID_UNMARKED) ? 1 : 0;</span>
+<a name="76"><span class="lineNum">      76 </span>            : }</a>
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span><span class="lineCov">         81 : int geopm_region_id_hint_is_equal(uint64_t hint_type, uint64_t region_id)</span>
+<span class="lineNum">      79 </span>            : {
+<span class="lineNum">      80 </span><span class="lineCov">         81 :     return (region_id &amp; hint_type) ? 1 : 0;</span>
+<a name="81"><span class="lineNum">      81 </span>            : }</a>
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span><span class="lineCov">          9 : uint64_t geopm_region_id_hint(uint64_t region_id)</span>
+<span class="lineNum">      84 </span>            : {
+<span class="lineNum">      85 </span><span class="lineCov">          9 :     return (region_id &amp; GEOPM_MASK_REGION_HINT);</span>
+<a name="86"><span class="lineNum">      86 </span>            : }</a>
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span><span class="lineCov">          6 : uint64_t geopm_region_id_hash(uint64_t region_id)</span>
+<span class="lineNum">      89 </span>            : {
+<span class="lineNum">      90 </span><span class="lineCov">          6 :     if (region_id != GEOPM_REGION_ID_EPOCH &amp;&amp;</span>
+<span class="lineNum">      91 </span>            :         region_id != GEOPM_REGION_ID_UNMARKED) {
+<span class="lineNum">      92 </span><span class="lineCov">          4 :         region_id = ((region_id &lt;&lt; 32) &gt;&gt; 32);</span>
+<span class="lineNum">      93 </span>            :     }
+<span class="lineNum">      94 </span><span class="lineCov">          6 :     return region_id;</span>
+<span class="lineNum">      95 </span>            : }
+<span class="lineNum">      96 </span>            : 
+<a name="97"><span class="lineNum">      97 </span>            : namespace geopm</a>
+<span class="lineNum">      98 </span>            : {
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :     Profile::Profile(const std::string &amp;prof_name, const std::string &amp;key_base, std::unique_ptr&lt;Comm&gt; comm,</span>
+<span class="lineNum">     100 </span>            :                      std::unique_ptr&lt;IControlMessage&gt; ctl_msg, IPlatformTopo &amp;topo, std::unique_ptr&lt;IProfileTable&gt; table,
+<span class="lineNum">     101 </span><span class="lineNoCov">          0 :                      std::shared_ptr&lt;IProfileThreadTable&gt; t_table, std::unique_ptr&lt;ISampleScheduler&gt; scheduler)</span>
+<span class="lineNum">     102 </span><span class="lineNoCov">          0 :         : Profile(prof_name, key_base, std::move(comm), std::move(ctl_msg), topo,</span>
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :                   std::move(table), t_table, std::move(scheduler), nullptr)</span>
+<span class="lineNum">     104 </span>            :     {
+<span class="lineNum">     105 </span>            : 
+<a name="106"><span class="lineNum">     106 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineCov">         19 :     Profile::Profile(const std::string &amp;prof_name, const std::string &amp;key_base, std::unique_ptr&lt;Comm&gt; comm,</span>
+<span class="lineNum">     109 </span>            :                      std::unique_ptr&lt;IControlMessage&gt; ctl_msg, IPlatformTopo &amp;topo, std::unique_ptr&lt;IProfileTable&gt; table,
+<span class="lineNum">     110 </span>            :                      std::shared_ptr&lt;IProfileThreadTable&gt; t_table, std::unique_ptr&lt;ISampleScheduler&gt; scheduler,
+<span class="lineNum">     111 </span><span class="lineCov">         19 :                      std::shared_ptr&lt;Comm&gt; reduce_comm)</span>
+<span class="lineNum">     112 </span>            :         : m_is_enabled(true)
+<span class="lineNum">     113 </span>            :         , m_prof_name(prof_name)
+<span class="lineNum">     114 </span>            :         , m_curr_region_id(0)
+<span class="lineNum">     115 </span>            :         , m_num_enter(0)
+<span class="lineNum">     116 </span>            :         , m_progress(0.0)
+<span class="lineNum">     117 </span>            :         , m_ctl_shmem(nullptr)
+<span class="lineNum">     118 </span><span class="lineCov">         19 :         , m_ctl_msg(std::move(ctl_msg))</span>
+<span class="lineNum">     119 </span>            :         , m_table_shmem(nullptr)
+<span class="lineNum">     120 </span><span class="lineCov">         19 :         , m_table(std::move(table))</span>
+<span class="lineNum">     121 </span>            :         , m_tprof_shmem(nullptr)
+<span class="lineNum">     122 </span>            :         , m_tprof_table(t_table)
+<span class="lineNum">     123 </span><span class="lineCov">         19 :         , m_scheduler(std::move(scheduler))</span>
+<span class="lineNum">     124 </span>            :         , m_shm_comm(nullptr)
+<span class="lineNum">     125 </span>            :         , m_rank(0)
+<span class="lineNum">     126 </span>            :         , m_shm_rank(0)
+<span class="lineNum">     127 </span>            :         , m_parent_region(0)
+<span class="lineNum">     128 </span>            :         , m_parent_progress(0.0)
+<span class="lineNum">     129 </span>            :         , m_parent_num_enter(0)
+<span class="lineNum">     130 </span>            :         , m_reduce_comm(reduce_comm)
+<span class="lineNum">     131 </span>            :         , m_overhead_time(0.0)
+<span class="lineNum">     132 </span>            :         , m_overhead_time_startup(0.0)
+<span class="lineNum">     133 </span><span class="lineCov">         76 :         , m_overhead_time_shutdown(0.0)</span>
+<span class="lineNum">     134 </span>            :     {
+<span class="lineNum">     135 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     136 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     137 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     138 </span>            :         if (m_reduce_comm == nullptr) {
+<span class="lineNum">     139 </span>            :             m_reduce_comm = geopm::comm_factory().make_plugin(geopm_env_comm());
+<span class="lineNum">     140 </span>            :         }
+<span class="lineNum">     141 </span>            : #endif
+<span class="lineNum">     142 </span><span class="lineCov">         38 :         std::string sample_key(key_base + &quot;-sample&quot;);</span>
+<span class="lineNum">     143 </span><span class="lineCov">         38 :         std::string tprof_key(key_base + &quot;-tprof&quot;);</span>
+<span class="lineNum">     144 </span><span class="lineCov">         19 :         int shm_num_rank = 0;</span>
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span><span class="lineCov">         19 :         init_prof_comm(std::move(comm), shm_num_rank);</span>
+<span class="lineNum">     147 </span>            :         try {
+<span class="lineNum">     148 </span><span class="lineCov">         19 :             init_ctl_msg(sample_key);</span>
+<span class="lineNum">     149 </span><span class="lineCov">         17 :             init_cpu_list(topo.num_domain(IPlatformTopo::M_DOMAIN_CPU));</span>
+<span class="lineNum">     150 </span><span class="lineCov">         17 :             init_cpu_affinity(shm_num_rank);</span>
+<span class="lineNum">     151 </span><span class="lineCov">         16 :             init_tprof_table(tprof_key, topo);</span>
+<span class="lineNum">     152 </span><span class="lineCov">         14 :             init_table(sample_key);</span>
+<span class="lineNum">     153 </span>            :         }
+<span class="lineNum">     154 </span><span class="lineCov">         14 :         catch (const Exception &amp;ex) {</span>
+<span class="lineNum">     155 </span><span class="lineCov">          7 :             if (!m_rank) {</span>
+<span class="lineNum">     156 </span><span class="lineCov">          7 :                 std::cerr &lt;&lt; &quot;Warning: &lt;geopm&gt; Controller handshake failed, running without geopm.&quot; &lt;&lt; std::endl;</span>
+<span class="lineNum">     157 </span><span class="lineCov">          7 :                 int err = ex.err_value();</span>
+<span class="lineNum">     158 </span><span class="lineCov">          7 :                 if (err != GEOPM_ERROR_RUNTIME) {</span>
+<span class="lineNum">     159 </span>            :                     char tmp_msg[NAME_MAX];
+<span class="lineNum">     160 </span><span class="lineCov">          5 :                     geopm_error_message(err, tmp_msg, sizeof(tmp_msg));</span>
+<span class="lineNum">     161 </span><span class="lineCov">          5 :                     tmp_msg[NAME_MAX-1] = '\0';</span>
+<span class="lineNum">     162 </span><span class="lineCov">          5 :                     std::cerr &lt;&lt; tmp_msg &lt;&lt; std::endl;</span>
+<span class="lineNum">     163 </span>            :                 }
+<span class="lineNum">     164 </span>            :             }
+<span class="lineNum">     165 </span><span class="lineCov">          7 :             m_is_enabled = false;</span>
+<span class="lineNum">     166 </span>            :         }
+<span class="lineNum">     167 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     168 </span>            :         m_overhead_time_startup = geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     169 </span>            : #endif
+<a name="170"><span class="lineNum">     170 </span><span class="lineCov">         19 :     }</span></a>
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :     Profile::Profile(const std::string &amp;prof_name, std::unique_ptr&lt;Comm&gt; comm)</span>
+<span class="lineNum">     173 </span><span class="lineNoCov">          0 :         : Profile(prof_name, geopm_env_shmkey(), std::move(comm), nullptr, platform_topo(), nullptr,</span>
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :                   nullptr, std::unique_ptr&lt;ISampleScheduler&gt;(new SampleScheduler(0.01)))</span>
+<span class="lineNum">     175 </span>            :     {
+<a name="176"><span class="lineNum">     176 </span><span class="lineNoCov">          0 :     }</span></a>
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span><span class="lineCov">         19 :     void Profile::init_prof_comm(std::unique_ptr&lt;Comm&gt; comm, int &amp;shm_num_rank)</span>
+<span class="lineNum">     179 </span>            :     {
+<span class="lineNum">     180 </span><span class="lineCov">         19 :         if (!m_shm_comm) {</span>
+<span class="lineNum">     181 </span><span class="lineCov">         19 :             m_rank = comm-&gt;rank();</span>
+<span class="lineNum">     182 </span><span class="lineCov">         19 :             m_shm_comm = comm-&gt;split(&quot;prof&quot;, Comm::M_COMM_SPLIT_TYPE_SHARED);</span>
+<span class="lineNum">     183 </span><span class="lineCov">         19 :             comm-&gt;tear_down();</span>
+<span class="lineNum">     184 </span><span class="lineCov">         19 :             comm.reset();</span>
+<span class="lineNum">     185 </span><span class="lineCov">         19 :             m_shm_rank = m_shm_comm-&gt;rank();</span>
+<span class="lineNum">     186 </span><span class="lineCov">         19 :             shm_num_rank = m_shm_comm-&gt;num_rank();</span>
+<span class="lineNum">     187 </span><span class="lineCov">         19 :             m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     188 </span>            :         }
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">         19 :     }</span></a>
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span><span class="lineCov">         19 :     void Profile::init_ctl_msg(const std::string &amp;sample_key)</span>
+<span class="lineNum">     192 </span>            :     {
+<span class="lineNum">     193 </span><span class="lineCov">         19 :         if (!m_ctl_msg) {</span>
+<span class="lineNum">     194 </span><span class="lineCov">          3 :             m_ctl_shmem = std::unique_ptr&lt;ISharedMemoryUser&gt;(new SharedMemoryUser(sample_key, geopm_env_profile_timeout()));</span>
+<span class="lineNum">     195 </span><span class="lineCov">          1 :             m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     196 </span><span class="lineCov">          1 :             if (!m_shm_rank) {</span>
+<span class="lineNum">     197 </span><span class="lineCov">          1 :                 m_ctl_shmem-&gt;unlink();</span>
+<span class="lineNum">     198 </span>            :             }
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span><span class="lineCov">          1 :             if (m_ctl_shmem-&gt;size() &lt; sizeof(struct geopm_ctl_message_s)) {</span>
+<span class="lineNum">     201 </span><span class="lineCov">          1 :                 throw Exception(&quot;Profile: ctl_shmem too small&quot;, GEOPM_ERROR_RUNTIME, __FILE__, __LINE__);</span>
+<span class="lineNum">     202 </span>            :             }
+<span class="lineNum">     203 </span><span class="lineNoCov">          0 :             m_ctl_msg = std::unique_ptr&lt;IControlMessage&gt;(new ControlMessage(*(struct geopm_ctl_message_s *)m_ctl_shmem-&gt;pointer(), false, !m_shm_rank));</span>
+<span class="lineNum">     204 </span>            :         }
+<a name="205"><span class="lineNum">     205 </span><span class="lineCov">         17 :     }</span></a>
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span><span class="lineCov">         17 :     void Profile::init_cpu_list(int num_cpu)</span>
+<span class="lineNum">     208 </span>            :     {
+<span class="lineNum">     209 </span><span class="lineCov">         17 :         if (!m_is_enabled) {</span>
+<span class="lineNum">     210 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     211 </span>            :         }
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span><span class="lineCov">         17 :         cpu_set_t *proc_cpuset = NULL;</span>
+<span class="lineNum">     214 </span><span class="lineCov">         17 :         proc_cpuset = CPU_ALLOC(num_cpu);</span>
+<span class="lineNum">     215 </span><span class="lineCov">         17 :         if (!proc_cpuset) {</span>
+<span class="lineNum">     216 </span>            :             throw Exception(&quot;Profile: unable to allocate process CPU mask&quot;,
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :                             ENOMEM, __FILE__, __LINE__);</span>
+<span class="lineNum">     218 </span>            :         }
+<span class="lineNum">     219 </span><span class="lineCov">         17 :         geopm_sched_proc_cpuset(num_cpu, proc_cpuset);</span>
+<span class="lineNum">     220 </span><span class="lineCov">         51 :         for (int i = 0; i &lt; num_cpu; ++i) {</span>
+<span class="lineNum">     221 </span><span class="lineCov">         34 :             if (CPU_ISSET(i, proc_cpuset)) {</span>
+<span class="lineNum">     222 </span><span class="lineNoCov">          0 :                 m_cpu_list.push_front(i);</span>
+<span class="lineNum">     223 </span>            :             }
+<span class="lineNum">     224 </span>            :         }
+<span class="lineNum">     225 </span><span class="lineCov">         17 :         free(proc_cpuset);</span>
+<a name="226"><span class="lineNum">     226 </span>            :     }</a>
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span><span class="lineCov">         17 :     void Profile::init_cpu_affinity(int shm_num_rank)</span>
+<span class="lineNum">     229 </span>            :     {
+<span class="lineNum">     230 </span><span class="lineCov">         17 :         m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     231 </span><span class="lineCov">         17 :         m_ctl_msg-&gt;step();  // M_STATUS_MAP_BEGIN</span>
+<span class="lineNum">     232 </span><span class="lineCov">         17 :         m_ctl_msg-&gt;wait();  // M_STATUS_MAP_BEGIN</span>
+<span class="lineNum">     233 </span>            : 
+<span class="lineNum">     234 </span><span class="lineCov">         51 :         for (int i = 0 ; i &lt; shm_num_rank; ++i) {</span>
+<span class="lineNum">     235 </span><span class="lineCov">         34 :             if (i == m_shm_rank) {</span>
+<span class="lineNum">     236 </span><span class="lineCov">         17 :                 if (i == 0) {</span>
+<span class="lineNum">     237 </span><span class="lineCov">      11535 :                     for (int i = 0; i &lt; GEOPM_MAX_NUM_CPU; ++i) {</span>
+<span class="lineNum">     238 </span><span class="lineCov">      11520 :                         m_ctl_msg-&gt;cpu_rank(i, -1);</span>
+<span class="lineNum">     239 </span>            :                     }
+<span class="lineNum">     240 </span><span class="lineCov">         15 :                     for (auto it = m_cpu_list.begin(); it != m_cpu_list.end(); ++it) {</span>
+<span class="lineNum">     241 </span><span class="lineNoCov">          0 :                         m_ctl_msg-&gt;cpu_rank(*it, m_rank);</span>
+<span class="lineNum">     242 </span>            :                     }
+<span class="lineNum">     243 </span>            :                 }
+<span class="lineNum">     244 </span>            :                 else {
+<span class="lineNum">     245 </span><span class="lineCov">          2 :                     for (auto it = m_cpu_list.begin(); it != m_cpu_list.end(); ++it) {</span>
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :                         if (m_ctl_msg-&gt;cpu_rank(*it) != -1) {</span>
+<span class="lineNum">     247 </span><span class="lineNoCov">          0 :                             m_ctl_msg-&gt;cpu_rank(*it, -2);</span>
+<span class="lineNum">     248 </span>            :                         }
+<span class="lineNum">     249 </span>            :                         else {
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 :                             m_ctl_msg-&gt;cpu_rank(*it, m_rank);</span>
+<span class="lineNum">     251 </span>            :                         }
+<span class="lineNum">     252 </span>            :                     }
+<span class="lineNum">     253 </span>            :                 }
+<span class="lineNum">     254 </span>            :             }
+<span class="lineNum">     255 </span><span class="lineCov">         34 :             m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     256 </span>            :         }
+<span class="lineNum">     257 </span>            : 
+<span class="lineNum">     258 </span><span class="lineCov">         17 :         if (!m_shm_rank) {</span>
+<span class="lineNum">     259 </span><span class="lineCov">      10767 :             for (int i = 0; i &lt; GEOPM_MAX_NUM_CPU; ++i) {</span>
+<span class="lineNum">     260 </span><span class="lineCov">      10753 :                 if (m_ctl_msg-&gt;cpu_rank(i) == -2) {</span>
+<span class="lineNum">     261 </span>            :                     throw Exception(&quot;Profile: cpu_rank not initialized correctly.&quot;,
+<span class="lineNum">     262 </span><span class="lineCov">          1 :                                     GEOPM_ERROR_AFFINITY, __FILE__, __LINE__);</span>
+<span class="lineNum">     263 </span>            :                 }
+<span class="lineNum">     264 </span>            :             }
+<span class="lineNum">     265 </span>            :         }
+<span class="lineNum">     266 </span><span class="lineCov">         16 :         m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     267 </span><span class="lineCov">         16 :         m_ctl_msg-&gt;step();  // M_STATUS_MAP_END</span>
+<span class="lineNum">     268 </span><span class="lineCov">         16 :         m_ctl_msg-&gt;wait();  // M_STATUS_MAP_END</span>
+<a name="269"><span class="lineNum">     269 </span><span class="lineCov">         16 :     }</span></a>
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span><span class="lineCov">         16 :     void Profile::init_tprof_table(const std::string &amp;tprof_key, IPlatformTopo &amp;topo)</span>
+<span class="lineNum">     272 </span>            :     {
+<span class="lineNum">     273 </span><span class="lineCov">         16 :         if (!m_tprof_table) {</span>
+<span class="lineNum">     274 </span><span class="lineCov">          7 :             m_tprof_shmem = std::unique_ptr&lt;ISharedMemoryUser&gt;(new SharedMemoryUser(tprof_key, 3.0));</span>
+<span class="lineNum">     275 </span><span class="lineCov">          5 :             m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     276 </span><span class="lineCov">          5 :             if (!m_shm_rank) {</span>
+<span class="lineNum">     277 </span><span class="lineCov">          3 :                 m_tprof_shmem-&gt;unlink();</span>
+<span class="lineNum">     278 </span>            :             }
+<span class="lineNum">     279 </span><span class="lineCov">          6 :             m_tprof_table = std::shared_ptr&lt;IProfileThreadTable&gt;(new ProfileThreadTable(topo, m_tprof_shmem-&gt;size(), m_tprof_shmem-&gt;pointer()));</span>
+<span class="lineNum">     280 </span>            :         }
+<a name="281"><span class="lineNum">     281 </span><span class="lineCov">         14 :     }</span></a>
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span><span class="lineCov">         14 :     void Profile::init_table(const std::string &amp;sample_key)</span>
+<span class="lineNum">     284 </span>            :     {
+<span class="lineNum">     285 </span><span class="lineCov">         14 :         if (!m_table) {</span>
+<span class="lineNum">     286 </span><span class="lineCov">         12 :             std::string table_shm_key(sample_key);</span>
+<span class="lineNum">     287 </span><span class="lineCov">          6 :             table_shm_key += &quot;-&quot; + std::to_string(m_rank);</span>
+<span class="lineNum">     288 </span><span class="lineCov">          7 :             m_table_shmem = std::unique_ptr&lt;ISharedMemoryUser&gt;(new SharedMemoryUser(table_shm_key, 3.0));</span>
+<span class="lineNum">     289 </span><span class="lineCov">          5 :             m_table_shmem-&gt;unlink();</span>
+<span class="lineNum">     290 </span><span class="lineCov">          6 :             m_table = std::unique_ptr&lt;IProfileTable&gt;(new ProfileTable(m_table_shmem-&gt;size(), m_table_shmem-&gt;pointer()));</span>
+<span class="lineNum">     291 </span>            :         }
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span><span class="lineCov">         12 :         m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     294 </span><span class="lineCov">         12 :         m_ctl_msg-&gt;step();  // M_STATUS_SAMPLE_BEGIN</span>
+<span class="lineNum">     295 </span><span class="lineCov">         12 :         m_ctl_msg-&gt;wait();  // M_STATUS_SAMPLE_BEGIN</span>
+<a name="296"><span class="lineNum">     296 </span><span class="lineCov">         12 :     }</span></a>
+<span class="lineNum">     297 </span>            : 
+<span class="lineNum">     298 </span><span class="lineCov">         50 :     Profile::~Profile()</span>
+<span class="lineNum">     299 </span>            :     {
+<span class="lineNum">     300 </span><span class="lineCov">         19 :         shutdown();</span>
+<a name="301"><span class="lineNum">     301 </span><span class="lineCov">         31 :     }</span></a>
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span><span class="lineCov">         21 :     void Profile::shutdown(void)</span>
+<span class="lineNum">     304 </span>            :     {
+<span class="lineNum">     305 </span><span class="lineCov">         21 :         if (!m_is_enabled) {</span>
+<span class="lineNum">     306 </span><span class="lineCov">          9 :             return;</span>
+<span class="lineNum">     307 </span>            :         }
+<span class="lineNum">     308 </span>            : 
+<span class="lineNum">     309 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     310 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     311 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     312 </span>            : #endif
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span><span class="lineCov">         12 :         m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     315 </span><span class="lineCov">         12 :         m_ctl_msg-&gt;step();  // M_SAMPLE_END</span>
+<span class="lineNum">     316 </span><span class="lineCov">         12 :         m_ctl_msg-&gt;wait();  // M_SAMPLE_END</span>
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     319 </span>            :         m_overhead_time_shutdown = geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     320 </span>            : #endif
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span><span class="lineCov">         12 :         print(geopm_env_report());</span>
+<span class="lineNum">     323 </span><span class="lineCov">         12 :         m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     324 </span><span class="lineCov">         12 :         m_ctl_msg-&gt;step();  // M_STATUS_SHUTDOWN</span>
+<span class="lineNum">     325 </span><span class="lineCov">         12 :         m_shm_comm-&gt;tear_down();</span>
+<span class="lineNum">     326 </span><span class="lineCov">         12 :         m_shm_comm.reset();</span>
+<span class="lineNum">     327 </span><span class="lineCov">         12 :         m_is_enabled = false;</span>
+<a name="328"><span class="lineNum">     328 </span>            :     }</a>
+<span class="lineNum">     329 </span>            : 
+<span class="lineNum">     330 </span><span class="lineCov">          9 :     uint64_t Profile::region(const std::string region_name, long hint)</span>
+<span class="lineNum">     331 </span>            :     {
+<span class="lineNum">     332 </span><span class="lineCov">          9 :         if (!m_is_enabled) {</span>
+<span class="lineNum">     333 </span><span class="lineCov">          1 :             return 0;</span>
+<span class="lineNum">     334 </span>            :         }
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     337 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     338 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     339 </span>            : #endif
+<span class="lineNum">     340 </span>            : 
+<span class="lineNum">     341 </span><span class="lineCov">          8 :         if (hint &amp;&amp; ((hint &amp; (hint - 1)) != 0)) {   /// power of 2 check</span>
+<span class="lineNum">     342 </span>            :             throw Exception(&quot;Profile:region() multiple region hints set and only 1 at a time is supported.&quot;,
+<span class="lineNum">     343 </span><span class="lineCov">          1 :                             GEOPM_ERROR_RUNTIME, __FILE__, __LINE__);</span>
+<span class="lineNum">     344 </span>            :         }
+<span class="lineNum">     345 </span><span class="lineCov">          7 :         uint64_t result = m_table-&gt;key(region_name);</span>
+<span class="lineNum">     346 </span>            :         /// Record hint when registering a region.
+<span class="lineNum">     347 </span><span class="lineCov">          7 :         result = geopm_region_id_set_hint(hint, result);</span>
+<span class="lineNum">     348 </span>            : 
+<span class="lineNum">     349 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     350 </span>            :         m_overhead_time += geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     351 </span>            : #endif
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span><span class="lineCov">          7 :         return result;</span>
+<a name="354"><span class="lineNum">     354 </span>            :     }</a>
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span><span class="lineCov">          8 :     void Profile::enter(uint64_t region_id)</span>
+<span class="lineNum">     357 </span>            :     {
+<span class="lineNum">     358 </span><span class="lineCov">          8 :         if (!m_is_enabled) {</span>
+<span class="lineNum">     359 </span><span class="lineCov">          1 :             return;</span>
+<span class="lineNum">     360 </span>            :         }
+<span class="lineNum">     361 </span>            : 
+<span class="lineNum">     362 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     363 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     364 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     365 </span>            : #endif
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span>            :         // if we are not currently in a region
+<span class="lineNum">     368 </span><span class="lineCov">          7 :         if (!m_curr_region_id &amp;&amp; region_id) {</span>
+<span class="lineNum">     369 </span><span class="lineCov">          9 :             if (!geopm_region_id_is_mpi(region_id) &amp;&amp;</span>
+<span class="lineNum">     370 </span><span class="lineCov">          4 :                 geopm_env_do_region_barrier()) {</span>
+<span class="lineNum">     371 </span><span class="lineCov">          4 :                 m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     372 </span>            :             }
+<span class="lineNum">     373 </span><span class="lineCov">          5 :             m_curr_region_id = region_id;</span>
+<span class="lineNum">     374 </span><span class="lineCov">          5 :             m_num_enter = 0;</span>
+<span class="lineNum">     375 </span><span class="lineCov">          5 :             m_progress = 0.0;</span>
+<span class="lineNum">     376 </span><span class="lineCov">          5 :             sample();</span>
+<span class="lineNum">     377 </span>            :         }
+<span class="lineNum">     378 </span>            :         else {
+<span class="lineNum">     379 </span><span class="lineCov">          2 :             m_tprof_table-&gt;enable(false);</span>
+<span class="lineNum">     380 </span>            :             // Allow nesting of one MPI region within a non-mpi region
+<span class="lineNum">     381 </span><span class="lineCov">          6 :             if (m_curr_region_id &amp;&amp;</span>
+<span class="lineNum">     382 </span><span class="lineCov">          4 :                 !geopm_region_id_is_mpi(m_curr_region_id) &amp;&amp;</span>
+<span class="lineNum">     383 </span><span class="lineCov">          2 :                 geopm_region_id_is_mpi(region_id)) {</span>
+<span class="lineNum">     384 </span><span class="lineCov">          1 :                 m_parent_num_enter = m_num_enter;</span>
+<span class="lineNum">     385 </span><span class="lineCov">          1 :                 m_num_enter = 0;</span>
+<span class="lineNum">     386 </span><span class="lineCov">          1 :                 m_parent_region = m_curr_region_id;</span>
+<span class="lineNum">     387 </span><span class="lineCov">          1 :                 m_parent_progress = m_progress;</span>
+<span class="lineNum">     388 </span><span class="lineCov">          1 :                 m_curr_region_id = geopm_region_id_set_mpi(m_curr_region_id);</span>
+<span class="lineNum">     389 </span><span class="lineCov">          1 :                 m_progress = 0.0;</span>
+<span class="lineNum">     390 </span><span class="lineCov">          1 :                 sample();</span>
+<span class="lineNum">     391 </span>            :             }
+<span class="lineNum">     392 </span>            :         }
+<span class="lineNum">     393 </span>            :         // keep track of number of entries to account for nesting
+<span class="lineNum">     394 </span><span class="lineCov">         15 :         if (m_curr_region_id == region_id ||</span>
+<span class="lineNum">     395 </span><span class="lineCov">          2 :             (geopm_region_id_is_mpi(m_curr_region_id) &amp;&amp;</span>
+<span class="lineNum">     396 </span><span class="lineCov">          1 :              geopm_region_id_is_mpi(region_id))) {</span>
+<span class="lineNum">     397 </span><span class="lineCov">          7 :             ++m_num_enter;</span>
+<span class="lineNum">     398 </span>            :         }
+<span class="lineNum">     399 </span>            : 
+<span class="lineNum">     400 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     401 </span>            :         m_overhead_time += geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     402 </span>            : #endif
+<span class="lineNum">     403 </span>            : 
+<a name="404"><span class="lineNum">     404 </span>            :     }</a>
+<span class="lineNum">     405 </span>            : 
+<span class="lineNum">     406 </span><span class="lineCov">          7 :     void Profile::exit(uint64_t region_id)</span>
+<span class="lineNum">     407 </span>            :     {
+<span class="lineNum">     408 </span><span class="lineCov">          7 :         if (!m_is_enabled) {</span>
+<span class="lineNum">     409 </span><span class="lineCov">          1 :             return;</span>
+<span class="lineNum">     410 </span>            :         }
+<span class="lineNum">     411 </span>            : 
+<span class="lineNum">     412 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     413 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     414 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     415 </span>            : #endif
+<span class="lineNum">     416 </span>            : 
+<span class="lineNum">     417 </span>            :         // keep track of number of exits to account for nesting
+<span class="lineNum">     418 </span><span class="lineCov">         13 :         if (m_curr_region_id == region_id ||</span>
+<span class="lineNum">     419 </span><span class="lineCov">          2 :             (geopm_region_id_is_mpi(m_curr_region_id) &amp;&amp;</span>
+<span class="lineNum">     420 </span><span class="lineCov">          1 :              geopm_region_id_is_mpi(region_id))) {</span>
+<span class="lineNum">     421 </span><span class="lineCov">          6 :             --m_num_enter;</span>
+<span class="lineNum">     422 </span>            :         }
+<span class="lineNum">     423 </span><span class="lineCov">          6 :         if (m_num_enter == 1) {</span>
+<span class="lineNum">     424 </span><span class="lineCov">          1 :             m_tprof_table-&gt;enable(true);</span>
+<span class="lineNum">     425 </span>            :         }
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span>            :         // if we are leaving the outer most nesting of our current region
+<span class="lineNum">     428 </span><span class="lineCov">          6 :         if (!m_num_enter) {</span>
+<span class="lineNum">     429 </span><span class="lineCov">          5 :             if (geopm_region_id_is_mpi(region_id)) {</span>
+<span class="lineNum">     430 </span><span class="lineCov">          2 :                 m_curr_region_id = geopm_region_id_set_mpi(m_parent_region);</span>
+<span class="lineNum">     431 </span>            :             }
+<span class="lineNum">     432 </span><span class="lineCov">          5 :             m_progress = 1.0;</span>
+<span class="lineNum">     433 </span><span class="lineCov">          5 :             sample();</span>
+<span class="lineNum">     434 </span><span class="lineCov">          5 :             m_curr_region_id = 0;</span>
+<span class="lineNum">     435 </span><span class="lineCov">          5 :             m_scheduler-&gt;clear();</span>
+<span class="lineNum">     436 </span><span class="lineCov">          5 :             if (geopm_region_id_is_mpi(region_id)) {</span>
+<span class="lineNum">     437 </span><span class="lineCov">          2 :                 m_curr_region_id = m_parent_region;</span>
+<span class="lineNum">     438 </span><span class="lineCov">          2 :                 m_progress = m_parent_progress;</span>
+<span class="lineNum">     439 </span><span class="lineCov">          2 :                 m_num_enter = m_parent_num_enter;</span>
+<span class="lineNum">     440 </span><span class="lineCov">          2 :                 m_parent_region = 0;</span>
+<span class="lineNum">     441 </span><span class="lineCov">          2 :                 m_parent_progress = 0.0;</span>
+<span class="lineNum">     442 </span><span class="lineCov">          2 :                 m_parent_num_enter = 0;</span>
+<span class="lineNum">     443 </span>            :             }
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span><span class="lineCov">          8 :             if (!geopm_region_id_is_mpi(region_id) &amp;&amp;</span>
+<span class="lineNum">     446 </span><span class="lineCov">          3 :                 geopm_env_do_region_barrier()) {</span>
+<span class="lineNum">     447 </span><span class="lineCov">          3 :                 m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     448 </span>            :             }
+<span class="lineNum">     449 </span>            : 
+<span class="lineNum">     450 </span>            :         }
+<span class="lineNum">     451 </span>            : 
+<span class="lineNum">     452 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     453 </span>            :         m_overhead_time += geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     454 </span>            : #endif
+<span class="lineNum">     455 </span>            : 
+<a name="456"><span class="lineNum">     456 </span>            :     }</a>
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span><span class="lineCov">          2 :     void Profile::progress(uint64_t region_id, double fraction)</span>
+<span class="lineNum">     459 </span>            :     {
+<span class="lineNum">     460 </span><span class="lineCov">          2 :         if (!m_is_enabled) {</span>
+<span class="lineNum">     461 </span><span class="lineCov">          1 :             return;</span>
+<span class="lineNum">     462 </span>            :         }
+<span class="lineNum">     463 </span>            : 
+<span class="lineNum">     464 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     465 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     466 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     467 </span>            : #endif
+<span class="lineNum">     468 </span>            : 
+<span class="lineNum">     469 </span><span class="lineCov">          3 :         if (m_num_enter == 1 &amp;&amp; m_curr_region_id == region_id &amp;&amp;</span>
+<span class="lineNum">     470 </span><span class="lineCov">          3 :             fraction &gt; 0.0 &amp;&amp; fraction &lt; 1.0 &amp;&amp;</span>
+<span class="lineNum">     471 </span><span class="lineCov">          1 :             m_scheduler-&gt;do_sample()) {</span>
+<span class="lineNum">     472 </span><span class="lineCov">          1 :             m_progress = fraction;</span>
+<span class="lineNum">     473 </span><span class="lineCov">          1 :             sample();</span>
+<span class="lineNum">     474 </span><span class="lineCov">          1 :             m_scheduler-&gt;record_exit();</span>
+<span class="lineNum">     475 </span>            :         }
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     478 </span>            :         m_overhead_time += geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     479 </span>            : #endif
+<span class="lineNum">     480 </span>            : 
+<a name="481"><span class="lineNum">     481 </span>            :     }</a>
+<span class="lineNum">     482 </span>            : 
+<span class="lineNum">     483 </span><span class="lineCov">          2 :     void Profile::epoch(void)</span>
+<span class="lineNum">     484 </span>            :     {
+<span class="lineNum">     485 </span><span class="lineCov">          3 :         if (!m_is_enabled ||</span>
+<span class="lineNum">     486 </span><span class="lineCov">          1 :             geopm_region_id_hint_is_equal(m_curr_region_id,</span>
+<span class="lineNum">     487 </span>            :                                           GEOPM_REGION_HINT_IGNORE)) {
+<span class="lineNum">     488 </span><span class="lineCov">          1 :             return;</span>
+<span class="lineNum">     489 </span>            :         }
+<span class="lineNum">     490 </span>            : 
+<span class="lineNum">     491 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     492 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     493 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     494 </span>            : #endif
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span>            :         struct geopm_prof_message_s sample;
+<span class="lineNum">     497 </span><span class="lineCov">          1 :         sample.rank = m_rank;</span>
+<span class="lineNum">     498 </span><span class="lineCov">          1 :         sample.region_id = GEOPM_REGION_ID_EPOCH;</span>
+<span class="lineNum">     499 </span><span class="lineCov">          1 :         (void) geopm_time(&amp;(sample.timestamp));</span>
+<span class="lineNum">     500 </span><span class="lineCov">          1 :         sample.progress = 0.0;</span>
+<span class="lineNum">     501 </span><span class="lineCov">          1 :         m_table-&gt;insert(sample);</span>
+<span class="lineNum">     502 </span>            : 
+<span class="lineNum">     503 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     504 </span>            :         m_overhead_time += geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     505 </span>            : #endif
+<span class="lineNum">     506 </span>            : 
+<a name="507"><span class="lineNum">     507 </span>            :     }</a>
+<span class="lineNum">     508 </span>            : 
+<span class="lineNum">     509 </span><span class="lineCov">         12 :     void Profile::sample(void)</span>
+<span class="lineNum">     510 </span>            :     {
+<span class="lineNum">     511 </span><span class="lineCov">         12 :         if (!m_is_enabled) {</span>
+<span class="lineNum">     512 </span><span class="lineNoCov">          0 :             return;</span>
+<span class="lineNum">     513 </span>            :         }
+<span class="lineNum">     514 </span>            : 
+<span class="lineNum">     515 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     516 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     517 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     518 </span>            : #endif
+<span class="lineNum">     519 </span>            : 
+<span class="lineNum">     520 </span>            :         struct geopm_prof_message_s sample;
+<span class="lineNum">     521 </span><span class="lineCov">         12 :         sample.rank = m_rank;</span>
+<span class="lineNum">     522 </span><span class="lineCov">         12 :         sample.region_id = m_curr_region_id;</span>
+<span class="lineNum">     523 </span><span class="lineCov">         12 :         (void) geopm_time(&amp;(sample.timestamp));</span>
+<span class="lineNum">     524 </span><span class="lineCov">         12 :         sample.progress = m_progress;</span>
+<span class="lineNum">     525 </span><span class="lineCov">         12 :         m_table-&gt;insert(sample);</span>
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     528 </span>            :         m_overhead_time += geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     529 </span>            : #endif
+<span class="lineNum">     530 </span>            : 
+<a name="531"><span class="lineNum">     531 </span>            :     }</a>
+<span class="lineNum">     532 </span>            : 
+<span class="lineNum">     533 </span><span class="lineCov">         12 :     void Profile::print(const std::string file_name)</span>
+<span class="lineNum">     534 </span>            :     {
+<span class="lineNum">     535 </span><span class="lineCov">         12 :         if (!m_is_enabled || !m_table_shmem) {</span>
+<span class="lineNum">     536 </span><span class="lineCov">          8 :             return;</span>
+<span class="lineNum">     537 </span>            :         }
+<span class="lineNum">     538 </span>            : 
+<span class="lineNum">     539 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     540 </span>            :         struct geopm_time_s overhead_entry;
+<span class="lineNum">     541 </span>            :         geopm_time(&amp;overhead_entry);
+<span class="lineNum">     542 </span>            : #endif
+<span class="lineNum">     543 </span>            : 
+<span class="lineNum">     544 </span><span class="lineCov">          4 :         int is_done = 0;</span>
+<span class="lineNum">     545 </span><span class="lineCov">          4 :         int is_all_done = 0;</span>
+<span class="lineNum">     546 </span>            : 
+<span class="lineNum">     547 </span><span class="lineCov">          4 :         m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     548 </span><span class="lineCov">          4 :         m_ctl_msg-&gt;step();  // M_STATUS_NAME_BEGIN</span>
+<span class="lineNum">     549 </span><span class="lineCov">          4 :         m_ctl_msg-&gt;wait();  // M_STATUS_NAME_BEGIN</span>
+<span class="lineNum">     550 </span>            : 
+<span class="lineNum">     551 </span><span class="lineCov">          4 :         size_t buffer_offset = 0;</span>
+<span class="lineNum">     552 </span><span class="lineCov">          4 :         size_t buffer_remain = m_table_shmem-&gt;size();</span>
+<span class="lineNum">     553 </span><span class="lineCov">          4 :         char *buffer_ptr = (char *)(m_table_shmem-&gt;pointer());</span>
+<span class="lineNum">     554 </span>            : 
+<span class="lineNum">     555 </span><span class="lineCov">          4 :         if (m_table_shmem-&gt;size() &lt; file_name.length() + 1 + m_prof_name.length() + 1) {</span>
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :             throw Exception(&quot;Profile:print() profile file name and profile name are too long to fit in a table buffer&quot;, GEOPM_ERROR_RUNTIME, __FILE__, __LINE__);</span>
+<span class="lineNum">     557 </span>            :         }
+<span class="lineNum">     558 </span>            : 
+<span class="lineNum">     559 </span><span class="lineCov">          4 :         strncpy(buffer_ptr, file_name.c_str(), buffer_remain - 1);</span>
+<span class="lineNum">     560 </span><span class="lineCov">          4 :         buffer_ptr += file_name.length() + 1;</span>
+<span class="lineNum">     561 </span><span class="lineCov">          4 :         buffer_offset += file_name.length() + 1;</span>
+<span class="lineNum">     562 </span><span class="lineCov">          4 :         buffer_remain -= file_name.length() + 1;</span>
+<span class="lineNum">     563 </span><span class="lineCov">          4 :         strncpy(buffer_ptr, m_prof_name.c_str(), buffer_remain - 1);</span>
+<span class="lineNum">     564 </span><span class="lineCov">          4 :         buffer_offset += m_prof_name.length() + 1;</span>
+<span class="lineNum">     565 </span><span class="lineCov">         12 :         while (!is_all_done) {</span>
+<span class="lineNum">     566 </span><span class="lineCov">          4 :             m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     567 </span><span class="lineCov">          4 :             m_ctl_msg-&gt;loop_begin();  // M_STATUS_NAME_LOOP_BEGIN</span>
+<span class="lineNum">     568 </span>            : 
+<span class="lineNum">     569 </span><span class="lineCov">          4 :             is_done = m_table-&gt;name_fill(buffer_offset);</span>
+<span class="lineNum">     570 </span><span class="lineCov">          4 :             is_all_done = m_shm_comm-&gt;test(is_done);</span>
+<span class="lineNum">     571 </span>            : 
+<span class="lineNum">     572 </span><span class="lineCov">          4 :             m_ctl_msg-&gt;step();  // M_STATUS_NAME_LOOP_END</span>
+<span class="lineNum">     573 </span><span class="lineCov">          4 :             m_ctl_msg-&gt;wait();  // M_STATUS_NAME_LOOP_END</span>
+<span class="lineNum">     574 </span><span class="lineCov">          4 :             buffer_offset = 0;</span>
+<span class="lineNum">     575 </span>            :         }
+<span class="lineNum">     576 </span><span class="lineCov">          4 :         m_shm_comm-&gt;barrier();</span>
+<span class="lineNum">     577 </span><span class="lineCov">          4 :         m_ctl_msg-&gt;step();  // M_STATUS_NAME_END</span>
+<span class="lineNum">     578 </span><span class="lineCov">          4 :         m_ctl_msg-&gt;wait();  // M_STATUS_NAME_END</span>
+<span class="lineNum">     579 </span>            : 
+<span class="lineNum">     580 </span>            : #ifdef GEOPM_OVERHEAD
+<span class="lineNum">     581 </span>            :         m_overhead_time += geopm_time_since(&amp;overhead_entry);
+<span class="lineNum">     582 </span>            :         double overhead_buffer[3] = {m_overhead_time_startup,
+<span class="lineNum">     583 </span>            :                                      m_overhead_time,
+<span class="lineNum">     584 </span>            :                                      m_overhead_time_shutdown};
+<span class="lineNum">     585 </span>            :         double max_overhead[3] = {};
+<span class="lineNum">     586 </span>            :         m_reduce_comm-&gt;reduce_max(overhead_buffer, max_overhead, 3, 0);
+<span class="lineNum">     587 </span>            : 
+<span class="lineNum">     588 </span>            :         if (!m_rank) {
+<span class="lineNum">     589 </span>            :             std::cout &lt;&lt; &quot;GEOPM startup (seconds):  &quot; &lt;&lt; max_overhead[0] &lt;&lt; std::endl;
+<span class="lineNum">     590 </span>            :             std::cout &lt;&lt; &quot;GEOPM runtime (seconds):  &quot; &lt;&lt; max_overhead[1] &lt;&lt; std::endl;
+<span class="lineNum">     591 </span>            :             std::cout &lt;&lt; &quot;GEOPM shutdown (seconds): &quot; &lt;&lt; max_overhead[2] &lt;&lt; std::endl;
+<span class="lineNum">     592 </span>            :         }
+<span class="lineNum">     593 </span>            : #endif
+<span class="lineNum">     594 </span>            : 
+<a name="595"><span class="lineNum">     595 </span>            :     }</a>
+<span class="lineNum">     596 </span>            : 
+<span class="lineNum">     597 </span><span class="lineCov">          2 :     std::shared_ptr&lt;IProfileThreadTable&gt; Profile::tprof_table(void)</span>
+<span class="lineNum">     598 </span>            :     {
+<a name="599"><span class="lineNum">     599 </span><span class="lineCov">          2 :         return m_tprof_table;</span></a>
+<span class="lineNum">     600 </span>            :     }
+<span class="lineNum">     601 </span><span class="lineCov">        654 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
